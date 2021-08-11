@@ -1,0 +1,61 @@
+name: Release kenv.zip
+
+on:
+  push:
+    branches:
+      - main
+      - beta
+      - alpha
+    tags:
+      - "*"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Inject slug/short variables
+        uses: rlespinasse/github-slug-action@v3.x
+
+      - name: Get Time
+        id: time
+        uses: nanzm/get-time-action@v1.1
+        with:
+          timeZone: 8
+          format: "YYYY-MM-DD-HH-mm-ss"
+
+      - name: Checkout kenv
+        uses: actions/checkout@master
+        with:
+          path: kenv
+
+      - name: Archive Release
+        uses: thedoctor0/zip-release@master
+        with:
+          filename: "kenv.zip"
+          exclusions: "*.git* /*node_modules/* .editorconfig /*src/*"
+
+      - name: Create Draft Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.time.outputs.time }}
+          release_name: kenv-${{ env.GITHUB_REF_SLUG_URL }}.zip
+          draft: true
+          prerelease: false
+
+      - uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./kenv.zip
+          asset_name: kenv.zip
+          asset_content_type: application/zip
+
+      - uses: eregon/publish-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          release_id: ${{ steps.create_release.outputs.id }}
