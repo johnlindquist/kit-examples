@@ -1,39 +1,40 @@
 // Menu: Todos "App"
-// Description: Example of create/read/update/delete
-// Shortcut: cmd shift .
+// Description: Create/read/update/delete db example
 // Author: John Lindquist
 // Twitter: @johnlindquist
 
-let {
-  addTodo,
-  getTodos,
-  removeTodo,
-  toggleTodo,
-} = await lib("todos")
+let { todos, write } = await db("todos-new-db", {
+  todos: [],
+})
 
 let todosChoices = () =>
-  getTodos().map(({ name, done, id }) => ({
+  todos.map(({ name, done, id }) => ({
     name: `${done ? "✅" : "❗️"} ${name}`,
     value: id,
   }))
 
 let toggle = async () => {
   let id = await arg("Toggle todo:", todosChoices())
-  toggleTodo(id)
+  let todo = todos.find(todo => todo.id === id)
+  todo.done = !todo.done
+  await write()
   await toggle()
 }
 
 let add = async () => {
-  addTodo(await arg("Enter todo name:"))
+  let name = await arg("Enter todo name:")
+  todos.push({ name, done: false, id: uuid() })
+  await write()
   await add()
 }
 
 let remove = async () => {
   let id = await arg("Remove todo:", todosChoices())
-  removeTodo(id)
+  todos = todos.filter(todo => todo.id !== id)
+  await write()
   await remove()
 }
 
-onTab("Add", add)
 onTab("Toggle", toggle)
+onTab("Add", add)
 onTab("Remove", remove)
