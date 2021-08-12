@@ -10,5 +10,5 @@ let response = await get(`https://icanhazdadjoke.com/`, {
   },
 })
 
-div(response.data, `p-4`)
 say(response.data)
+await div(response.data, `p-4`)
