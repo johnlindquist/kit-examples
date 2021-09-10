@@ -1,8 +1,6 @@
 // Exclude: true
 // Shortcut: control option v
 
-let { setSelectedText } = await kit("text")
-
 let clipboardDb = db("clipboard-history")
 
 let history = clipboardDb.get("history").value()

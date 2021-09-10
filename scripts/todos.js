@@ -13,19 +13,25 @@ let todosChoices = () =>
     value: id,
   }))
 
+let add = async () => {
+  let name = await arg(
+    {
+      placeholder: "Enter todo name:",
+      className: `p-4`,
+    },
+    md(todosChoices().map(t => `* ${t}\n`))
+  )
+  todos.push({ name, done: false, id: uuid() })
+  await write()
+  await add()
+}
+
 let toggle = async () => {
   let id = await arg("Toggle todo:", todosChoices())
   let todo = todos.find(todo => todo.id === id)
   todo.done = !todo.done
   await write()
   await toggle()
-}
-
-let add = async () => {
-  let name = await arg("Enter todo name:")
-  todos.push({ name, done: false, id: uuid() })
-  await write()
-  await add()
 }
 
 let remove = async () => {
@@ -35,6 +41,6 @@ let remove = async () => {
   await remove()
 }
 
-onTab("Toggle", toggle)
 onTab("Add", add)
+onTab("Toggle", toggle)
 onTab("Remove", remove)

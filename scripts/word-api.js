@@ -3,8 +3,6 @@
 // Author: John Lindquist
 // Twitter: @johnlindquist
 
-let { setSelectedText } = await kit("text")
-
 let queryWords = (api, type) => async word => {
   if (!word || word?.length < 3) return []
   let url = `https://api.datamuse.com/${api}?${type}=${word}&md=d`
