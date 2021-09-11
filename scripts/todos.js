@@ -19,7 +19,11 @@ let add = async () => {
       placeholder: "Enter todo name:",
       className: `p-4`,
     },
-    md(todosChoices().map(t => `* ${t}\n`))
+    md(
+      todosChoices()
+        .map(t => `* ${t.name}`)
+        .join("\n")
+    )
   )
   todos.push({ name, done: false, id: uuid() })
   await write()
