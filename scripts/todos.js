@@ -9,6 +9,7 @@ let { todos, write } = await db("todos-new-db", {
 
 let todosChoices = () =>
   todos.map(({ name, done, id }) => ({
+    id,
     name: `${done ? "✅" : "❗️"} ${name}`,
     value: id,
   }))

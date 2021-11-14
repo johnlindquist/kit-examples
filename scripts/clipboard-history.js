@@ -1,31 +1,27 @@
 // Exclude: true
 // Shortcut: control option v
 
-let clipboardDb = db("clipboard-history")
+import "@johnlindquist/kit"
 
-let history = clipboardDb.get("history").value()
+let argOptions = {
+  placeholder: "Search history",
+  hint: "Enter to paste. Cmd+Shift+Delete to Remove",
+  flags: {
+    remove: {
+      description: "Remove focused item from history",
+      shortcut: "cmd+shift+backspace",
+    },
+  },
+}
 
-let value = await arg("What to paste?", () => {
-  return history.map(
-    ({ value, type, timestamp, secret }) => {
-      return {
-        name: secret
-          ? value.slice(0, 4).padEnd(10, "*")
-          : value,
-        description: timestamp,
-        value,
-        preview:
-          type === "image"
-            ? md(`![timestamp](${value})`)
-            : value.includes("\n")
-            ? `<div class="font-mono text-xs">${value
-                .split("\n")
-                .map(line => `<p>${line}</p>`)
-                .join("")}<div>`
-            : null,
-      }
-    }
-  )
-})
+let history = await getClipboardHistory()
+let value = await arg(argOptions, history)
 
-setSelectedText(value)
+while (flag?.remove) {
+  let { id } = history.find(h => h?.value === value)
+  removeClipboardItem(id)
+  history = await getClipboardHistory()
+  value = await arg(argOptions, history)
+}
+
+await setSelectedText(value)
