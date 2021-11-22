@@ -16,10 +16,7 @@ let todosChoices = () =>
 
 let add = async () => {
   let name = await arg(
-    {
-      placeholder: "Enter todo name:",
-      className: `p-4`,
-    },
+    "Enter todo name:",
     md(
       todosChoices()
         .map(t => `* ${t.name}`)

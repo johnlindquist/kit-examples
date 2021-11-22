@@ -3,12 +3,28 @@
 // Author: John Lindquist
 // Twitter: @johnlindquist
 
-let response = await get(`https://icanhazdadjoke.com/`, {
-  headers: {
-    Accept: "text/plain",
-    "User-Agent": "axios 0.21.1",
-  },
-})
+while (true) {
+  let yesOrNo = await arg(
+    {
+      placeholder: "Dad Joke",
+      hint: `Another? [y]/[n]`,
+    },
+    async () => {
+      let response = await get(
+        `https://icanhazdadjoke.com/`,
+        {
+          headers: {
+            Accept: "text/plain",
+            "User-Agent": "axios 0.21.1",
+          },
+        }
+      )
+      say(response.data)
+      return md(`
+  ${response.data}  
+    `)
+    }
+  )
 
-say(response.data)
-await div(response.data, `p-4`)
+  if (yesOrNo === "n") break
+}

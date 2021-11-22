@@ -6,11 +6,11 @@
 await applescript(`
 tell application "System Events"
 
-tell appearance preferences
+    tell appearance preferences
 
-set dark mode to not dark mode
+        set dark mode to not dark mode
 
-end tell
+    end tell
 
 end tell
 `)
