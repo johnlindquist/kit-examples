@@ -1,23 +1,46 @@
 // Menu: Resize an Image
-// Description: Select an image in Finder before running this
+// Description: Select an Image in Finder to Resize
 // Author: John Lindquist
 // Twitter: @johnlindquist
 
-let sharp = await npm("sharp")
+let Jimp = await npm("jimp")
 
-let image = await getSelectedFile()
+let imagePath = await getSelectedFile()
+if (!imagePath)
+  imagePath = await selectFile(`Choose an image:`)
 
-let width = Number(await arg("Enter width:"))
+console.log({ imagePath })
 
-let metadata = await sharp(image).metadata()
+let extension = path.extname(imagePath)
+let allowImageExtensions = [".png", ".jpg"]
+while (!allowImageExtensions.includes(extension)) {
+  let fileName = path.basename(imagePath)
 
-let newHeight = Math.floor(
-  metadata.height * (width / metadata.width)
+  imagePath = await selectFile(
+    `${fileName} wasn't an image:`
+  )
+  if (!imagePath) exit()
+
+  extension = path.extname(imagePath)
+}
+
+let width = Number(
+  await arg({
+    placeholder: "Enter width",
+    hint: imagePath,
+    panel: `<img src="${imagePath}" class="w-full"/>`,
+  })
 )
 
-let lastDot = /.(?!.*\.)/
-let resizedImageName = image.replace(lastDot, `-${width}.`)
+let image = await Jimp.read(imagePath)
 
-await sharp(image)
-  .resize(width, newHeight)
-  .toFile(resizedImageName)
+let newHeight = Math.floor(
+  image.bitmap.height * (width / image.bitmap.width)
+)
+
+let resizedImageName = imagePath.replace(
+  new RegExp(`${extension}$`),
+  `-${width}${extension}`
+)
+
+await image.resize(width, newHeight).write(resizedImageName)

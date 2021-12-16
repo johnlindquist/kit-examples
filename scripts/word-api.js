@@ -3,9 +3,9 @@
 // Author: John Lindquist
 // Twitter: @johnlindquist
 
-let queryWords = (api, type) => async word => {
-  if (!word || word?.length < 3) return []
-  let url = `https://api.datamuse.com/${api}?${type}=${word}&md=d`
+let queryWords = (api, type) => async input => {
+  if (!input || input?.length < 3) return []
+  let url = `https://api.datamuse.com/${api}?${type}=${input}&md=d`
 
   let response = await get(url)
   let words = response.data.map(({ word, defs }) => {
@@ -21,31 +21,42 @@ let queryWords = (api, type) => async word => {
     }
   })
 
-  return words.length ? words : [`No results for ${word}`]
+  return words.length ? words : [`No results for ${input}`]
 }
 
-let input = await arg("Enter word:", queryWords("sug", "s"))
-
-let wordApi = async (type, input) => {
+let wordApi = async (api, type, input = "") => {
   let word = await arg(
-    { message: "Enter word:", input },
-    queryWords("words", type)
+    { placeholder: "Begin typing to search:", input },
+    queryWords(api, type)
   )
 
   setSelectedText(word.replace(/ /g, "+"))
 }
 
-let typeMap = {
-  Synonym: "ml",
-  Noun: "rel_jja",
-  Adjectives: "rel_jjb",
-  ["Sounds Like"]: "sl",
-  Rhyme: "rel_rhy",
-  Consonant: "rel_cns",
-}
+onTab("Spell", async input => {
+  await wordApi("sug", "s", input)
+})
 
-Object.entries(typeMap).forEach(([key, value]) => {
-  onTab(key, async () => {
-    return await wordApi(value, input)
-  })
+onTab("Synonym", async input => {
+  await wordApi("words", "ml", input)
+})
+
+onTab("Nouns", async input => {
+  await wordApi("words", "rel_jja", input)
+})
+
+onTab("Adjectives", async input => {
+  await wordApi("words", "rel_jjb", input)
+})
+
+onTab("Sounds Like", async input => {
+  await wordApi("words", "sl", input)
+})
+
+onTab("Rhyme", async input => {
+  await wordApi("words", "rel_rhy", input)
+})
+
+onTab("Consonant", async input => {
+  await wordApi("words", "rel_cns", input)
 })

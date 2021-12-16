@@ -21,7 +21,7 @@ while (true) {
       )
       say(response.data)
       return md(`
-  ${response.data}  
+  # ${response.data}  
     `)
     }
   )
