@@ -7,42 +7,50 @@ let { todos, write } = await db("todos-new-db", {
   todos: [],
 })
 
-let todosChoices = () =>
-  todos.map(({ name, done, id }) => ({
-    id,
-    name: `${done ? "✅" : "❗️"} ${name}`,
-    value: id,
-  }))
+let onChoices = async input => {
+  setPanel(``)
+}
 
-let add = async () => {
-  let name = await arg(
-    "Enter todo name:",
-    md(
-      todosChoices()
-        .map(t => `* ${t.name}`)
-        .join("\n")
-    )
-  )
-  todos.push({ name, done: false, id: uuid() })
-  await write()
-  await add()
+let onNoChoices = async input => {
+  if (input) setPanel(md(`# Enter to create "${input}"`))
+  else setPlaceholder(`Enter a todo name`)
+}
+
+let argConfig = {
+  placeholder: "Toggle Todo",
+  // disabling "strict" allows you to submit the input when no choices are available
+  strict: false,
+  onChoices,
+  onNoChoices,
 }
 
 let toggle = async () => {
-  let id = await arg("Toggle todo:", todosChoices())
-  let todo = todos.find(todo => todo.id === id)
-  todo.done = !todo.done
+  let todo = await arg(argConfig, todos)
+
+  if (typeof todo === "string") {
+    todos.push({
+      name: todo,
+      done: false,
+      html: md(`## ❗️ ${todo}`),
+      id: uuid(),
+    })
+  } else if (todo?.id) {
+    let foundTodo = _.find(todos, todo)
+    foundTodo.done = !foundTodo.done
+    let emoji = foundTodo.done ? `✅` : `❗️`
+    foundTodo.html = md(`## ${emoji} ${foundTodo.name}`)
+  }
+
   await write()
   await toggle()
 }
 
 let remove = async () => {
-  let id = await arg("Remove todo:", todosChoices())
-  todos = todos.filter(todo => todo.id !== id)
+  let todo = await arg("Remove todo:", todos)
+  _.remove(todos, ({ id }) => todo.id === id)
   await write()
   await remove()
 }
 
-onTab("Add", add)
 onTab("Toggle", toggle)
 onTab("Remove", remove)
