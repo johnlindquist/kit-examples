@@ -3,24 +3,26 @@
 // Author: John Lindquist
 // Twitter: @johnlindquist
 
+import "@johnlindquist/kit"
+
+// Clear the choices from the previous script
+// when passing an empty array. Will be
+// fixed in the next build
+setChoices(null)
+
 let { todos, write } = await db("todos-new-db", {
   todos: [],
 })
 
-let onChoices = async input => {
-  setPanel(``)
-}
-
 let onNoChoices = async input => {
   if (input) setPanel(md(`# Enter to create "${input}"`))
-  else setPlaceholder(`Enter a todo name`)
+  else setPanel(md(`# Enter a todo name`))
 }
 
 let argConfig = {
   placeholder: "Toggle Todo",
   // disabling "strict" allows you to submit the input when no choices are available
   strict: false,
-  onChoices,
   onNoChoices,
 }
 
@@ -46,7 +48,12 @@ let toggle = async () => {
 }
 
 let remove = async () => {
-  let todo = await arg("Remove todo:", todos)
+  let todo = await arg({
+    placeholder: "Remove todo",
+    onNoChoices: () => {
+      setPanel(md(`# No todos to remove`))
+    }
+  }, todos)
   _.remove(todos, ({ id }) => todo.id === id)
   await write()
   await remove()
