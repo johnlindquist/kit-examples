@@ -3,8 +3,15 @@
 
 import "@johnlindquist/kit"
 
-let response = await get(
-  `https://dog.ceo/api/breed/corgi/images/random`
-)
+let corgi = await widget(`<img :src="url"/>`)
 
-show(`<image src="${response.data.message}"/>`)
+let updateImage = async () => {
+  let response = await get(
+    `https://dog.ceo/api/breed/corgi/images/random`
+  )
+
+  corgi.setState({ url: response.data.message })
+}
+
+updateImage()
+corgi.onClick(updateImage)
