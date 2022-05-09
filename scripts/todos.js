@@ -5,11 +5,6 @@
 
 import "@johnlindquist/kit"
 
-// Clear the choices from the previous script
-// when passing an empty array. Will be
-// fixed in the next build
-setChoices(null)
-
 let { todos, write } = await db("todos-new-db", {
   todos: [],
 })
@@ -48,12 +43,15 @@ let toggle = async () => {
 }
 
 let remove = async () => {
-  let todo = await arg({
-    placeholder: "Remove todo",
-    onNoChoices: () => {
-      setPanel(md(`# No todos to remove`))
-    }
-  }, todos)
+  let todo = await arg(
+    {
+      placeholder: "Remove todo",
+      onNoChoices: () => {
+        setPanel(md(`# No todos to remove`))
+      },
+    },
+    todos
+  )
   _.remove(todos, ({ id }) => todo.id === id)
   await write()
   await remove()
