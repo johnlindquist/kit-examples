@@ -11,17 +11,33 @@ let getJoke = async () => {
     },
   })
   say(response.data)
-  return md(`
-# ${response.data}  
-`)
+  return `<div class="text-center text-4xl p-10 font-semibold">${response.data}</div>`
 }
 
 while (true) {
-  let yesOrNo = await arg({
-    placeholder: "Dad Joke",
-    hint: `Another? [y]/[n]`,
-    panel: await getJoke(),
-  })
+  let yesOrNo = await arg(
+    {
+      placeholder: "Dad Joke",
+      enter: ``,
+      shortcuts: [
+        {
+          name: "Another",
+          key: `Y`,
+          onPress: () => submit("y"),
+          bar: "right",
+        },
+        {
+          name: "Please, make it stop!",
+          key: `N`,
+          onPress: () => submit("n"),
+          bar: "right",
+        },
+      ],
+    },
+    async () => {
+      return await getJoke()
+    }
+  )
 
   if (yesOrNo === "n") break
 }

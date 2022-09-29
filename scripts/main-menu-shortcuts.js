@@ -1,4 +1,4 @@
-// Name: Cheat Sheet
+// Name: Main Menu Shortcuts
 // Index: 0
 
 import "@johnlindquist/kit"
@@ -12,7 +12,6 @@ let sheet = `
 , = Scratch Pad
 . = File Search
 ' = Snippets
-[ = Templates
 " = Word API
 - = System Commands
 = = Dev Tools
@@ -34,4 +33,4 @@ let content = await editor({
 })
 
 // update file after save
-await writeFile(kenvPath("cheat-sheet.md"), content)
+await writeFile(kenvPath("main-menu-shortcuts.md"), content)

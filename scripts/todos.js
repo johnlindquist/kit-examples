@@ -10,19 +10,34 @@ let { todos, write } = await db("todos-new-db", {
 })
 
 let onNoChoices = async input => {
-  if (input) setPanel(md(`# Enter to create "${input}"`))
-  else setPanel(md(`# Enter a todo name`))
+  if (input) {
+    setPanel(md(`# Enter to create "${input}"`))
+    setEnter("Create Todo")
+  } else {
+    setPanel(md(`# Enter a todo name`))
+  }
 }
 
-let argConfig = {
-  placeholder: "Toggle Todo",
-  // disabling "strict" allows you to submit the input when no choices are available
-  strict: false,
-  onNoChoices,
-}
+let defaultValue = ""
 
-let toggle = async () => {
-  let todo = await arg(argConfig, todos)
+// The input allows you to maintain input when switching tabs
+let toggle = async (input = "") => {
+  let todo = await arg(
+    {
+      input,
+      placeholder: "Toggle Todo",
+      defaultValue,
+      // disabling "strict" allows you to submit the input when no choices are available
+      strict: false,
+      onNoChoices,
+      onChoiceFocus: (input, { focused }) => {
+        setEnter("Toggle Todo")
+        // defaultValue allows you to maintain the selected choice when switching tabs
+        defaultValue = focused?.name
+      },
+    },
+    todos
+  )
 
   if (typeof todo === "string") {
     todos.push({
@@ -39,15 +54,22 @@ let toggle = async () => {
   }
 
   await write()
+  // Call toggle to keep the prompt open and create another todo
   await toggle()
 }
 
-let remove = async () => {
+let remove = async (input = "") => {
   let todo = await arg(
     {
-      placeholder: "Remove todo",
+      input,
+      defaultValue,
+      placeholder: "Remove Todo",
+      enter: "Remove Todo",
       onNoChoices: () => {
         setPanel(md(`# No todos to remove`))
+      },
+      onChoiceFocus: (input, { focused }) => {
+        defaultValue = focused?.name
       },
     },
     todos

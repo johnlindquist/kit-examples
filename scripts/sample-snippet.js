@@ -1,5 +1,7 @@
 // Name: Sample Snippet
-// Snippet: kit,,
+// Description: Expand Text Globally
+// Author: John Lindquist
+// Twitter: @johnlindquist
 
 // A Snippet script is run when you type the characters
 // defined in the "Snippet" comment anywhere on your system

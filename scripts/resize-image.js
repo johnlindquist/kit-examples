@@ -38,9 +38,10 @@ let newHeight = Math.floor(
   image.bitmap.height * (width / image.bitmap.width)
 )
 
-let resizedImageName = imagePath.replace(
+let resizedImagePath = imagePath.replace(
   new RegExp(`${extension}$`),
   `-${width}${extension}`
 )
 
-await image.resize(width, newHeight).write(resizedImageName)
+await image.resize(width, newHeight).write(resizedImagePath)
+revealFile(resizedImagePath)

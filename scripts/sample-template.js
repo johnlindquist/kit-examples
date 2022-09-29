@@ -1,18 +1,19 @@
 // Name: Sample Template
-// Template: true
-
-// Typing "[" in the main menu will list scripts with the
-// "Template" comment. This convention helps organize
-// scripts designed to paste blocks of such as e-mail templates, etc.
+// Description: Use a Template to Generate Text
+// Author: John Lindquist
+// Twitter: @johnlindquist
 
 import "@johnlindquist/kit"
 
-let name = await arg("Enter name")
-
-let template = `
-My name is ${name} and I love Script Kit! ❤️
-`.trim()
+// Templates use the same variable syntax as VS Code templates
+// Templates pair very nicely with snippets!
+let result = await template(`
+// Name: \${1:Script Name}
+// Description: \${2:Script Description}
+// Author: \${3:John Lindquist}
+// Twitter: \${4:@johnlindquist}
+`.trim())
 
 // You can think of `setSelectedText` as "paste this text" in the
 // active app behind Kit.app
-setSelectedText(template)
+setSelectedText(result)
