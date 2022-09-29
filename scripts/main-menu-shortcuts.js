@@ -22,7 +22,7 @@ let sheet = `
 Note: Feel free to modify this and take your own notes! 😉
 `.trim()
 
-let cheatSheetPath = kenvPath("cheat-sheet.md")
+let cheatSheetPath = kenvPath("main-menu-shortcuts.md")
 
 // If file doesn't exist, create with content
 let value = await ensureReadFile(cheatSheetPath, sheet)
@@ -33,4 +33,4 @@ let content = await editor({
 })
 
 // update file after save
-await writeFile(kenvPath("main-menu-shortcuts.md"), content)
+await writeFile(cheatSheetPath, content)
