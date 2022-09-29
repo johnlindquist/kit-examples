@@ -5,21 +5,24 @@
 
 let express = await npm("express")
 let detectPort = await npm("detect-port")
-let app = express()
 
+let app = express()
 let port = await detectPort(3000)
 
 app.get("/", async (req, res) => {
   let content = await readFile(kitPath("API.md"), "utf-8")
-  let html = await md(content)
+  let style = `<style>
+  body {
+    font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+    </style>`
+  let html = style + md(content)
   res.send(html)
 })
 
 let url = `http://localhost:${port}`
 app.listen(port, () => {
-  console.log(
-    `Example app listening at ${url}`
-  )
+  console.log(`Example app listening at ${url}`)
 })
 
 open(url)
