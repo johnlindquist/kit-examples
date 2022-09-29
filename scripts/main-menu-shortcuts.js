@@ -1,4 +1,5 @@
-// Name: Main Menu Shortcuts
+// Name: Main Menu Actions
+// Description: These keys trigger features
 // Index: 0
 
 import "@johnlindquist/kit"
@@ -22,10 +23,10 @@ let sheet = `
 Note: Feel free to modify this and take your own notes! 😉
 `.trim()
 
-let cheatSheetPath = kenvPath("main-menu-shortcuts.md")
+let mainMenuActionsPath = kenvPath("main-menu-actions.md")
 
 // If file doesn't exist, create with content
-let value = await ensureReadFile(cheatSheetPath, sheet)
+let value = await ensureReadFile(mainMenuActionsPath, sheet)
 
 let content = await editor({
   value,
@@ -33,4 +34,4 @@ let content = await editor({
 })
 
 // update file after save
-await writeFile(cheatSheetPath, content)
+await writeFile(mainMenuActionsPath, content)
