@@ -2,6 +2,7 @@
 // Description: Expand Text Globally
 // Author: John Lindquist
 // Twitter: @johnlindquist
+// Snippet: kit,,
 
 // A Snippet script is run when you type the characters
 // defined in the "Snippet" comment anywhere on your system
