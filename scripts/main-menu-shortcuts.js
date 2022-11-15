@@ -47,6 +47,7 @@
 import {
   highlightJavaScript,
   getMetadata,
+  backToMainShortcut,
 } from "@johnlindquist/kit"
 
 let mainScriptsPath = kitPath("main")
@@ -73,5 +74,26 @@ let scripts = (
   )
 ).filter(Boolean)
 
-let selectedScript = await arg("Main Scripts", scripts)
-await run(selectedScript)
+let selectedScript = await arg(
+  {
+    placeholder: "Select a Main Script to Run",
+    enter: "Run",
+    shortcuts: [
+      backToMainShortcut,
+      {
+        name: "View Source",
+        key: `${cmd}+o`,
+        bar: "right",
+        onPress: async (input, { focused }) => {
+          await run(
+            kitPath("cli", "edit-script.js"),
+            focused.value
+          )
+          submit(false)
+        },
+      },
+    ],
+  },
+  scripts
+)
+if (selectedScript) await run(selectedScript)
