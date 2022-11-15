@@ -1,4 +1,11 @@
-// Menu: Giphy
+/* 
+# Paste a Gif from Giphy
+- Prompts the user for a Giphy API key to store in the .env
+- Opens a prompt to search gifs from Giphy
+- Paste Gif per user's choice
+*/
+
+// Name: Giphy
 // Description: Search and Paste Gifs
 // Author: John Lindquist
 // Twitter: @johnlindquist
@@ -17,40 +24,49 @@ let search = q =>
   `https://api.giphy.com/v1/gifs/search?api_key=${GIPHY_API_KEY}&q=${q}&limit=10&offset=0&rating=g&lang=en`
 
 let giphy = async input => {
-  if (!input) return md(`# Search Giphy`)
+  if (!input)
+    return md(`# Search Giphy
+  
+Begin typing to start search...
+  `)
   let query = search(input)
   let { data } = await get(query)
 
   return data.data.map(gif => {
     return {
       name: gif.title.trim() || gif.slug,
-      value: {
-        input,
-        url: gif.images.original.url,
-      },
+      value: gif.images.original.url,
       preview: `<img class="w-full" src="${gif.images.downsized.url}" alt="">`,
     }
   })
 }
 
-let { input, url } = await arg("Search Giphy", giphy)
+let formattedLink = await arg(
+  {
+    placeholder: "Search Giphy",
+    enter: "Paste URL",
+    shortcuts: [
+      {
+        name: "Paste Markdown Link",
+        key: `${cmd}+m`,
+        bar: "right",
+        onPress: (input, { focused }) => {
+          submit(`![${input}](${focused.value})`)
+        },
+      },
+      {
+        name: "HTML <img>",
+        key: `${cmd}+i`,
+        bar: "right",
+        onPress: (input, { focused }) => {
+          submit(
+            `<img src="${focused.value}" alt="${input}">`
+          )
+        },
+      },
+    ],
+  },
+  giphy
+)
 
-let formattedLink = await arg("Format", [
-  {
-    name: "[U]RL Only",
-    description: url,
-    value: url,
-  },
-  {
-    name: "[M]arkdown Image Link",
-    description: `![${input}](${url})`,
-    value: `![${input}](${url})`,
-  },
-  {
-    name: "[H]TML <img>",
-    description: `<img src="${url}" alt="${input}">`,
-    value: `<img src="${url}" alt="${input}">`,
-  },
-])
-
-setSelectedText(formattedLink)
+await setSelectedText(formattedLink)

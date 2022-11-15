@@ -1,3 +1,12 @@
+/*
+# Markdown Journal
+- Creates a new markdown file based on the day (or opens existing file)
+- Opens the file in the built-in editor
+- Adds a timestamp
+- Auto-saves as you type
+- On first run, will prompt the user to select where to store files
+*/
+
 // Name: Journal
 
 import { createPathResolver } from "@johnlindquist/kit"

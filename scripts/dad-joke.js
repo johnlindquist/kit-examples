@@ -1,4 +1,12 @@
-// Menu: Dad Joke
+/*
+# Speak Text Requested from an API
+
+- Requests a joke from [https://icanhazdadjoke.com](https://icanhazdadjoke.com)
+- Speaks the joke
+- Tap `y` to speak another joke
+*/
+
+// Name: Dad Joke
 // Description: Dad Joke from icanhazdadjoke.com
 // Author: John Lindquist
 // Twitter: @johnlindquist

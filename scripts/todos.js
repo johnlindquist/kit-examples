@@ -1,3 +1,10 @@
+/*
+# Todos "App"
+- Creates a json file to read/write todos
+- Allows to add, toggle, and remove todos
+- Demonstrates using "onTab" and advanced "arg" features
+*/
+
 // Menu: Todos "App"
 // Description: Create/read/update/delete db example
 // Author: John Lindquist

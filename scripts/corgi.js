@@ -1,3 +1,10 @@
+/*
+# Display Images with Widgets
+
+- Opens a widget displaying a picture of a corgi
+- Clicking on the corgi requests a new image
+- Closing the Widget speaks `Luv u Corgi!`
+*/
 // Name: Corgi Widget
 // Description: Display a Corgi in a Widget
 // Author: John Lindquist

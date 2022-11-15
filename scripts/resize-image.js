@@ -1,3 +1,11 @@
+/*
+# Resize an Image
+- Prompts user to install "jimp"
+- Uses image path from currently selected file in Finder
+- Prompts user for resize dimensions
+- Resizes and reveals new file in Finder
+*/
+
 // Menu: Resize an Image
 // Description: Select an Image in Finder to Resize
 // Author: John Lindquist

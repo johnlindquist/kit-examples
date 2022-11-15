@@ -1,3 +1,11 @@
+/*
+# Start an Express Server
+
+- Requests to install `express` and `detect-port`
+- Starts an express server
+- Opens the local url once server is running
+*/
+
 // Menu: Express Server
 // Description: Start an Express server
 // Author: John Lindquist
