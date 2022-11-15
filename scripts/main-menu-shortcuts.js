@@ -4,7 +4,6 @@
 | Script                    | Key         |
 | ------------------------- | -           |
 | App Launcher              | ;           |
-| Focus Window              | :           |
 | File Browser              | /           |
 | Terminal                  | >           |
 | Clipboard                 | <           |
