@@ -1,5 +1,5 @@
 /*
-# Sample Snippet
+# Text Expansion Snippet
 
 > On Mac, Snippets require "Accessibility Permissions"
 
