@@ -11,6 +11,8 @@
 // Author: John Lindquist
 // Twitter: @johnlindquist
 
+import "@johnlindquist/kit"
+
 let getJoke = async () => {
   let response = await get(`https://icanhazdadjoke.com/`, {
     headers: {

@@ -9,6 +9,8 @@
 // Name: Update Examples
 // Description: Update to the Latest Script Kit Examples
 
+import "@johnlindquist/kit"
+
 let examplesDir = kenvPath("kenvs", "examples")
 cd(examplesDir)
 

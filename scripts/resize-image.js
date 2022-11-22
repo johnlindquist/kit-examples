@@ -11,11 +11,12 @@
 // Author: John Lindquist
 // Twitter: @johnlindquist
 
+import "@johnlindquist/kit"
+
 let Jimp = await npm("jimp")
 
 let imagePath = await getSelectedFile()
-if (!imagePath)
-  imagePath = await selectFile(`Choose an image:`)
+if (!imagePath) imagePath = await selectFile(`Choose an image:`)
 
 console.log({ imagePath })
 
@@ -24,9 +25,7 @@ let allowImageExtensions = [".png", ".jpg"]
 while (!allowImageExtensions.includes(extension)) {
   let fileName = path.basename(imagePath)
 
-  imagePath = await selectFile(
-    `${fileName} wasn't an image:`
-  )
+  imagePath = await selectFile(`${fileName} wasn't an image:`)
   if (!imagePath) exit()
 
   extension = path.extname(imagePath)
@@ -42,14 +41,9 @@ let width = Number(
 
 let image = await Jimp.read(imagePath)
 
-let newHeight = Math.floor(
-  image.bitmap.height * (width / image.bitmap.width)
-)
+let newHeight = Math.floor(image.bitmap.height * (width / image.bitmap.width))
 
-let resizedImagePath = imagePath.replace(
-  new RegExp(`${extension}$`),
-  `-${width}${extension}`
-)
+let resizedImagePath = imagePath.replace(new RegExp(`${extension}$`), `-${width}${extension}`)
 
 await image.resize(width, newHeight).write(resizedImagePath)
 revealFile(resizedImagePath)

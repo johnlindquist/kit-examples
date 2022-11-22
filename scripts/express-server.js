@@ -11,6 +11,8 @@
 // Author: John Lindquist
 // Twitter: @johnlindquist
 
+import "@johnlindquist/kit"
+
 let express = await npm("express")
 let detectPort = await npm("detect-port")
 
