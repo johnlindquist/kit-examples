@@ -43,11 +43,7 @@
 // Name: Main Menu Reference
 // Description: List of Main Menu Features
 // Index: 0
-import {
-  highlightJavaScript,
-  getMetadata,
-  backToMainShortcut,
-} from "@johnlindquist/kit"
+import { highlightJavaScript, getMetadata, backToMainShortcut } from "@johnlindquist/kit"
 
 let mainScriptsPath = kitPath("main")
 
@@ -55,21 +51,21 @@ let files = await readdir(mainScriptsPath)
 
 let scripts = (
   await Promise.all(
-    files.map(async file => {
-      let scriptPath = path.resolve(mainScriptsPath, file)
-      let contents = await readFile(scriptPath, "utf8")
-      let metadata = getMetadata(contents)
-      if (metadata?.exclude) return ""
+    files
+      .filter(f => f.endsWith(".js"))
+      .map(async file => {
+        let scriptPath = path.resolve(mainScriptsPath, file)
+        let contents = await readFile(scriptPath, "utf8")
+        let metadata = getMetadata(contents)
+        if (metadata?.exclude) return ""
 
-      return {
-        name:
-          metadata?.name || metadata?.description || file,
-        description: metadata?.description || file,
-        value: scriptPath,
-        preview: async () =>
-          highlightJavaScript(scriptPath),
-      }
-    })
+        return {
+          name: metadata?.name || metadata?.description || file,
+          description: metadata?.description || file,
+          value: scriptPath,
+          preview: async () => highlightJavaScript(scriptPath),
+        }
+      })
   )
 ).filter(Boolean)
 
@@ -84,10 +80,7 @@ let selectedScript = await arg(
         key: `${cmd}+o`,
         bar: "right",
         onPress: async (input, { focused }) => {
-          await run(
-            kitPath("cli", "edit-script.js"),
-            focused.value
-          )
+          await run(kitPath("cli", "edit-script.js"), focused.value)
           submit(false)
         },
       },
