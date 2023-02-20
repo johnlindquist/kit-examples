@@ -1,3 +1,3 @@
-//Menu:
+//Name:
 //Description:
 //Shortcut:

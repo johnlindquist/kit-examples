@@ -6,7 +6,7 @@
 - Resizes and reveals new file in Finder
 */
 
-// Menu: Resize an Image
+// Name: Resize an Image
 // Description: Select an Image in Finder to Resize
 // Author: John Lindquist
 // Twitter: @johnlindquist

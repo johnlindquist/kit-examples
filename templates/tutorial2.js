@@ -2,9 +2,9 @@ await arg("This is the metadata tutorial 😊")
 
 /**
  * 1. Name Your Script in the Menu
- * Start by adding `// Menu: My Super Cool Script` to the top of this file
+ * Start by adding `// Name: My Super Cool Script` to the top of this file
  * Now when you launch the main menu with `cmd ;`, you'll find this script matches
- * whatever you put next to `// Menu:`!
+ * whatever you put next to `// Name:`!
  * The name will live-update anytime you save the file.
  */
 

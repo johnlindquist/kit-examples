@@ -6,7 +6,7 @@
 - Opens the local url once server is running
 */
 
-// Menu: Express Server
+// Name: Express Server
 // Description: Start an Express server
 // Author: John Lindquist
 // Twitter: @johnlindquist

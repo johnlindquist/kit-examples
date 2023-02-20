@@ -5,7 +5,7 @@
 - Demonstrates using "onTab" and advanced "arg" features
 */
 
-// Menu: Todos "App"
+// Name: Todos "App"
 // Description: Create/read/update/delete db example
 // Author: John Lindquist
 // Twitter: @johnlindquist

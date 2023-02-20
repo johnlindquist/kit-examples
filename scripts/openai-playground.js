@@ -27,7 +27,7 @@ setTimeout(() => {
   setLoading(true)
 }, 250)
 let response = await openai.createCompletion({
-  model: "text-davinci-002",
+  model: "text-davinci-003",
   prompt: `${prompt}
 
   `,
