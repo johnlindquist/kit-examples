@@ -13,9 +13,7 @@
 import "@johnlindquist/kit"
 
 let GIPHY_API_KEY = await env("GIPHY_API_KEY", {
-  panel: md(
-    `## Get a [Giphy API Key](https://developers.giphy.com/dashboard/)`
-  ),
+  panel: md(`## Get a [Giphy API Key](https://developers.giphy.com/dashboard/)`),
   ignoreBlur: true,
   secret: true,
 })
@@ -24,11 +22,15 @@ let search = q =>
   `https://api.giphy.com/v1/gifs/search?api_key=${GIPHY_API_KEY}&q=${q}&limit=10&offset=0&rating=g&lang=en`
 
 let giphy = async input => {
-  if (!input)
-    return md(`# Search Giphy
-  
-Begin typing to start search...
-  `)
+  if (!input) {
+    return [
+      {
+        name: "Begin Typing to Search Giphy",
+        disableSubmit: true,
+      },
+    ]
+  }
+
   let query = search(input)
   let { data } = await get(query)
 
@@ -59,9 +61,7 @@ let formattedLink = await arg(
         key: `${cmd}+i`,
         bar: "right",
         onPress: (input, { focused }) => {
-          submit(
-            `<img src="${focused.value}" alt="${input}">`
-          )
+          submit(`<img src="${focused.value}" alt="${input}">`)
         },
       },
     ],
