@@ -1,6 +1,8 @@
 /*
 # Main Menu Cheat Sheet
 
+> Note: Running this script will create a PDF of the cheat sheet
+
 | Script                    | Key         |
 | ------------------------- | -           |
 | App Launcher              | ;           |
