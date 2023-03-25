@@ -16,12 +16,20 @@ let { todos, write } = await db("todos-new-db", {
   todos: [],
 })
 
+let formatPanelText = text => {
+  return `<div class="text-primary h-full flex px-4 items-center">${text}</div>`
+}
+
+let formatChoiceText = text => {
+  return `<div class="flex items-center">${text}</div>`
+}
+
 let onNoChoices = async input => {
   if (input) {
-    setPanel(md(`# Enter to create "${input}"`))
+    setPanel(formatPanelText(`Enter to create "${input}"`))
     setEnter("Create Todo")
   } else {
-    setPanel(md(`# Enter a todo name`))
+    setPanel(formatPanelText(`Enter a todo name`))
   }
 }
 
@@ -50,14 +58,14 @@ let toggle = async (input = "") => {
     todos.push({
       name: todo,
       done: false,
-      html: md(`## ❗️ ${todo}`),
+      html: formatChoiceText(`❗️ ${todo}`),
       id: uuid(),
     })
   } else if (todo?.id) {
     let foundTodo = _.find(todos, todo)
     foundTodo.done = !foundTodo.done
     let emoji = foundTodo.done ? `✅` : `❗️`
-    foundTodo.html = md(`## ${emoji} ${foundTodo.name}`)
+    foundTodo.html = formatChoiceText(`${emoji} ${foundTodo.name}`)
   }
 
   await write()
@@ -73,7 +81,7 @@ let remove = async (input = "") => {
       placeholder: "Remove Todo",
       enter: "Remove Todo",
       onNoChoices: () => {
-        setPanel(md(`# No todos to remove`))
+        setPanel(formatPanelText(`No todos to remove 🤔`))
       },
       onChoiceFocus: (input, { focused }) => {
         defaultValue = focused?.name

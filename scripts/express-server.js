@@ -13,8 +13,8 @@
 
 import "@johnlindquist/kit"
 
-let express = await npm("express")
-let detectPort = await npm("detect-port")
+let { default: express } = await import("express")
+let { default: detectPort } = await import("detect-port")
 
 let app = express()
 let port = await detectPort(3000)

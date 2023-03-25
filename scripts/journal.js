@@ -26,10 +26,7 @@ let dashedDate = format(new Date(), "yyyy-MM-dd")
 
 let filePath = journalPath(dashedDate + ".md")
 setDescription(filePath)
-let value = await ensureReadFile(
-  filePath,
-  `# ${dashedDate}`
-)
+let value = await ensureReadFile(filePath, `# ${dashedDate}`)
 
 let dashedTime = format(new Date(), "hh:mma")
 
@@ -81,6 +78,7 @@ let content = await editor({
     autoSave(input)
   },
 })
+hide()
 
 let trimmed = content.trim()
 if (!changed) {
@@ -95,9 +93,7 @@ copy(content.split(/##.*/).pop().trim())
 let isGit = await isDir(journalPath(".git"))
 if (isGit) {
   try {
-    let { stdout } = await exec(
-      `git add . && git commit -m "${dashedDate}-${dashedTime}" && git push`
-    )
+    let { stdout } = await exec(`git add . && git commit -m "${dashedDate}-${dashedTime}" && git push`)
     log({ stdout })
   } catch (error) {
     log(error)

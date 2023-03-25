@@ -13,7 +13,7 @@
 
 import "@johnlindquist/kit"
 
-let Jimp = await npm("jimp")
+let { default: Jimp } = await import("jimp")
 
 let imagePath = await getSelectedFile()
 if (!imagePath) imagePath = await selectFile(`Choose an image:`)
@@ -31,13 +31,7 @@ while (!allowImageExtensions.includes(extension)) {
   extension = path.extname(imagePath)
 }
 
-let width = Number(
-  await arg({
-    placeholder: "Enter width",
-    hint: imagePath,
-    panel: `<img src="${imagePath}" class="w-full"/>`,
-  })
-)
+let width = Number(await arg("Enter width to resize image to:", md(`![${imagePath}](${imagePath})`)))
 
 let image = await Jimp.read(imagePath)
 

@@ -19,7 +19,18 @@ let configuration = new Configuration({
 })
 
 let openai = new OpenAIApi(configuration)
-let prompt = await arg("Prompt:")
+let prompt = await arg(
+  {
+    placeholder: "Prompt",
+    strict: false,
+  },
+  [
+    {
+      name: "Enter a prompt to send to OpenAI",
+      info: "always",
+    },
+  ]
+)
 
 editor(prompt)
 

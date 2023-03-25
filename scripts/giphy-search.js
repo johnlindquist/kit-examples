@@ -13,9 +13,19 @@
 import "@johnlindquist/kit"
 
 let GIPHY_API_KEY = await env("GIPHY_API_KEY", {
-  panel: md(`## Get a [Giphy API Key](https://developers.giphy.com/dashboard/)`),
+  shortcuts: [
+    {
+      name: "Get Giphy API Key",
+      key: `${cmd}+o`,
+      bar: "right",
+      onPress: () => {
+        open("https://developers.giphy.com/dashboard/")
+      },
+    },
+  ],
   ignoreBlur: true,
   secret: true,
+  height: PROMPT.HEIGHT.INPUT_ONLY,
 })
 
 let search = q =>
@@ -26,7 +36,7 @@ let giphy = async input => {
     return [
       {
         name: "Begin Typing to Search Giphy",
-        disableSubmit: true,
+        info: "onNoChoices",
       },
     ]
   }
@@ -47,6 +57,7 @@ let formattedLink = await arg(
   {
     placeholder: "Search Giphy",
     enter: "Paste URL",
+    resize: true,
     shortcuts: [
       {
         name: "Paste Markdown Link",

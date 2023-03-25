@@ -20,7 +20,10 @@ let result = await template(
 // Description: \${2:Script Description}
 // Author: \${3:John Lindquist}
 // Twitter: \${4:@johnlindquist}
-`.trim()
+`.trim(),
+  {
+    height: PROMPT.HEIGHT.XXS,
+  }
 )
 
 // You can think of `setSelectedText` as "paste this text" in the
