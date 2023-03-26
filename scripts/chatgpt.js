@@ -21,7 +21,7 @@ import "@johnlindquist/kit"
 
 let { ChatOpenAI } = await import("langchain/chat_models")
 let { ConversationChain } = await import("langchain/chains")
-let { BufferMemory } = await import("langchain/memory")
+let { BufferWindowMemory } = await import("langchain/memory")
 let { CallbackManager } = await import("langchain/callbacks")
 let { ChatPromptTemplate, HumanMessagePromptTemplate, SystemMessagePromptTemplate, MessagesPlaceholder } = await import(
   "langchain/prompts"
@@ -73,7 +73,7 @@ let llm = new ChatOpenAI({
   }),
 })
 
-let memory = new BufferMemory({
+let memory = new BufferWindowMemory({
   returnMessages: true,
 })
 
