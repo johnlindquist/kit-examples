@@ -19,7 +19,7 @@ Use `Kit` -> `Manage npm Packages` -> `Update a Package` -> `langchain` to updat
 
 import "@johnlindquist/kit"
 
-let { ChatOpenAI } = await import("langchain/chat_models")
+let { ChatOpenAI } = await import("langchain/chat_models/openai")
 let { ConversationChain } = await import("langchain/chains")
 let { BufferWindowMemory } = await import("langchain/memory")
 let { ChatPromptTemplate, HumanMessagePromptTemplate, SystemMessagePromptTemplate, MessagesPlaceholder } = await import(
