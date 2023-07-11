@@ -31,8 +31,20 @@ app.get("/", async (req, res) => {
 })
 
 let url = `http://localhost:${port}`
-app.listen(port, () => {
-  console.log(`Example app listening at ${url}`)
+app.listen(port, async () => {
+  await div(
+    md(`
+# Server running at [${url}](${url})
+
+## How to End Long-Running Scripts
+
+Press "${cmd}+p" from the Main Menu to open the Process Manager. Select the process you want to end.
+
+![](https://raw.githubusercontent.com/johnlindquist/screenshots/main/CleanShot%202023-07-11%20at%2008.35.58.jpeg?token=GHSAT0AAAAAABO3JO2OZ3SQGNUZO6EOEHHSZFNNHAA)
+`)
+  )
+  // If a script is going to stay "alive", you need to manually call `hide()` to hide the prompt
+  hide()
 })
 
 open(url)
