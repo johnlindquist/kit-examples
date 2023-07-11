@@ -40,7 +40,7 @@ app.listen(port, async () => {
 
 Press "${cmd}+p" from the Main Menu to open the Process Manager. Select the process you want to end.
 
-![](https://raw.githubusercontent.com/johnlindquist/screenshots/main/CleanShot%202023-07-11%20at%2008.35.58.jpeg?token=GHSAT0AAAAAABO3JO2OZ3SQGNUZO6EOEHHSZFNNHAA)
+![http://res.cloudinary.com/johnlindquist/image/upload/v1689094925/clipboard/stzc2z4dsi15wrwdctao.png](http://res.cloudinary.com/johnlindquist/image/upload/v1689094925/clipboard/stzc2z4dsi15wrwdctao.png)
 `)
   )
   // If a script is going to stay "alive", you need to manually call `hide()` to hide the prompt
