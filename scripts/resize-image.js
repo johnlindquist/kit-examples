@@ -18,8 +18,6 @@ let { default: Jimp } = await import("jimp")
 let imagePath = await getSelectedFile()
 if (!imagePath) imagePath = await selectFile(`Choose an image:`)
 
-console.log({ imagePath })
-
 let extension = path.extname(imagePath)
 let allowImageExtensions = [".png", ".jpg"]
 while (!allowImageExtensions.includes(extension)) {
