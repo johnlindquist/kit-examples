@@ -16,10 +16,18 @@ import "@johnlindquist/kit"
 // Templates pair very nicely with snippets!
 let result = await template(
   `
-// Name:  John
-// Description: \${2:Script Description}
-// Author: \${3:John Lindquist}
-// Twitter: \${4:@johnlindquist}
+Dear \${1:Name},
+
+Thank you for buying \${2:Product}!
+
+We hope you enjoy it.
+
+Have a \$\{3:great} day!
+
+\${4: Sincerely},
+
+- \${5:John Lindquist}
+
 `.trim(),
   {
     height: PROMPT.HEIGHT.XXS,
