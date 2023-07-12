@@ -11,49 +11,49 @@
 // Description: Query Open AI's API
 
 import "@johnlindquist/kit"
-
-let { Configuration, OpenAIApi } = await npm("openai")
+import { Configuration, OpenAIApi } from "openai"
 
 let configuration = new Configuration({
   apiKey: await env("OPENAI_API_KEY"),
 })
 
 let openai = new OpenAIApi(configuration)
-let prompt = await arg(
-  {
-    placeholder: "Prompt",
-    strict: false,
-  },
-  [
+
+let currentPanel = ``
+let content = ``
+let messages = []
+
+while (true) {
+  content = await micro(
     {
-      name: "Enter a prompt to send to OpenAI",
-      info: "always",
+      ignoreBlur: true,
+      input: content,
+      placeholder: "Prompt OpenAI",
+      strict: false,
+      onEscape: () => {
+        exit()
+      },
     },
-  ]
-)
+    currentPanel
+  )
 
-editor(prompt)
+  messages.push({
+    role: "user",
+    content,
+  })
 
-setTimeout(() => {
   setLoading(true)
-}, 250)
-let response = await openai.createCompletion({
-  model: "text-davinci-003",
-  prompt: `${prompt}
 
-  `,
-  temperature: 0.7,
-  max_tokens: 512,
-  top_p: 1,
-  frequency_penalty: 0,
-  presence_penalty: 0,
-})
+  let response = await openai.createChatCompletion({
+    model: "gpt-4",
+    messages,
+  })
 
-setLoading(false)
-
-let text = response?.data?.choices[0]?.text?.trim()
-if (text) {
-  await editor(text)
-} else {
-  dev(response.data)
+  let message = response?.data?.choices?.[0]?.message
+  if (message) {
+    messages.push(message)
+    currentPanel = md(message?.content)
+  } else {
+    dev(response.data)
+  }
 }
