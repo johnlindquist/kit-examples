@@ -12,87 +12,99 @@
 
 import "@johnlindquist/kit"
 
-let { todos, write } = await db("todos-new-db", {
-  todos: [],
-})
-
-let formatPanelText = text => {
-  return `<div class="text-primary h-full flex px-4 items-center">${text}</div>`
-}
-
-let formatChoiceText = text => {
-  return `<div class="flex items-center">${text}</div>`
-}
-
-let onNoChoices = async input => {
-  if (input) {
-    setPanel(formatPanelText(`Enter to create "${input}"`))
-    setEnter("Create Todo")
-  } else {
-    setPanel(formatPanelText(`Enter a todo name`))
-  }
-}
-
-let defaultValue = ""
+// "kv" is a key/value store
+// The name "todos" will map to ~/.kenv/db/todos.json
+// The object will be the initial value
+let kv = await store("todos", { todos: [] })
+let defaultChoiceId = ""
 
 // The input allows you to maintain input when switching tabs
-let toggle = async (input = "") => {
-  let todo = await arg(
+let toggleTab = async (input = "") => {
+  let todos = await kv.get("todos")
+  let todo = await micro(
     {
       input,
-      placeholder: "Toggle Todo",
-      defaultValue,
+      placeholder: todos.length ? "Add Todo" : "Toggle Todo",
+      defaultChoiceId,
       // disabling "strict" allows you to submit the input when no choices are available
       strict: false,
-      onNoChoices,
       onChoiceFocus: (input, { focused }) => {
-        setEnter("Toggle Todo")
         // defaultValue allows you to maintain the selected choice when switching tabs
-        defaultValue = focused?.name
+        defaultChoiceId = focused?.id
+        setEnter("Toggle Todo")
+      },
+      onNoChoices: (input, { count }) => {
+        setEnter("Add Todo")
       },
     },
-    todos
+    [
+      ...todos.map(t => {
+        return {
+          ...t,
+          enter: "Toggle Todo",
+          name: `${t.done ? "✅" : "❌"} ${t.name}`,
+        }
+      }),
+      {
+        name: "Add Todo",
+        miss: true,
+        info: true,
+      },
+    ]
   )
 
+  // "todo" was the string input
   if (typeof todo === "string") {
     todos.push({
       name: todo,
       done: false,
-      html: formatChoiceText(`❗️ ${todo}`),
       id: uuid(),
     })
-  } else if (todo?.id) {
-    let foundTodo = _.find(todos, todo)
+  }
+  // "todo" was the selected object
+  else if (todo?.id) {
+    let foundTodo = todos.find(({ id }) => id === todo.id)
     foundTodo.done = !foundTodo.done
-    let emoji = foundTodo.done ? `✅` : `❗️`
-    foundTodo.html = formatChoiceText(`${emoji} ${foundTodo.name}`)
   }
 
-  await write()
-  // Call toggle to keep the prompt open and create another todo
-  await toggle()
+  await kv.set("todos", todos)
+  await toggleTab()
 }
 
-let remove = async (input = "") => {
-  let todo = await arg(
+let removeTab = async (input = "") => {
+  let todos = await kv.get("todos")
+  let todo = await micro(
     {
       input,
-      defaultValue,
+      defaultChoiceId,
       placeholder: "Remove Todo",
       enter: "Remove Todo",
-      onNoChoices: () => {
-        setPanel(formatPanelText(`No todos to remove 🤔`))
-      },
       onChoiceFocus: (input, { focused }) => {
-        defaultValue = focused?.name
+        defaultChoiceId = focused?.id
       },
     },
-    todos
+    [
+      ...todos.map(t => {
+        return {
+          ...t,
+          enter: "Toggle Todo",
+          name: `${t.done ? "✅" : "❌"} ${t.name}`,
+        }
+      }),
+      {
+        name: todos.length ? "No Matches" : "No Todos",
+        miss: true,
+        info: true,
+      },
+    ]
   )
-  _.remove(todos, ({ id }) => todo.id === id)
-  await write()
-  await remove()
+  // Remove the todo from the array
+  let index = todos.findIndex(t => t.id === todo.id)
+
+  todos.splice(index, 1)
+  await kv.set("todos", todos)
+  await removeTab()
 }
 
-onTab("Toggle", toggle)
-onTab("Remove", remove)
+onTab("Toggle", toggleTab)
+onTab("Remove", removeTab)
