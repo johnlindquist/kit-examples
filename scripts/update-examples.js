@@ -8,6 +8,7 @@
 
 // Name: Update Examples
 // Description: Update to the Latest Script Kit Examples
+// Recent: false
 
 import "@johnlindquist/kit"
 
