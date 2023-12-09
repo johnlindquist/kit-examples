@@ -13,8 +13,7 @@
 
 import "@johnlindquist/kit"
 
-let { default: Jimp } = await import("jimp")
-
+import Jimp from "jimp"
 let imagePath = await getSelectedFile()
 if (!imagePath) imagePath = await selectFile(`Choose an image:`)
 
@@ -37,5 +36,8 @@ let newHeight = Math.floor(image.bitmap.height * (width / image.bitmap.width))
 
 let resizedImagePath = imagePath.replace(new RegExp(`${extension}$`), `-${width}${extension}`)
 
-await image.resize(width, newHeight).write(resizedImagePath)
+log({ resizedImagePath })
+
+await image.resize(width, newHeight).writeAsync(resizedImagePath)
+
 revealFile(resizedImagePath)
