@@ -11,12 +11,12 @@
 
 import { createPathResolver } from "@johnlindquist/kit"
 import _ from "lodash"
-
-let { format } = await npm("date-fns")
+import { format } from "date-fns"
 
 let journalDir = await env("JOURNAL_DIR", async () => {
-  setDescription(`Select a Journal Directory`)
-  return await path()
+  return await path({
+    hint: "Select a directory to store journal.md files",
+  })
 })
 
 let journalPath = createPathResolver(journalDir)

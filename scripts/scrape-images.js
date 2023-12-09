@@ -13,7 +13,7 @@
 
 import "@johnlindquist/kit"
 
-let query = await mini("Image search")
+let query = await arg("Image search")
 let srcs = await scrapeSelector(`https://www.google.com/search?q=${query}&tbm=isch`, "img", el => el.src)
 let base64s = srcs.filter(src => src.includes("base64"))
 
@@ -22,4 +22,7 @@ ${base64s.map(src => `<img class="w-24 h-24 object-cover" src="${src}" />`).join
 </div>
 `
 
-await div(html)
+await div({
+  html,
+  ignoreBlur: true,
+})

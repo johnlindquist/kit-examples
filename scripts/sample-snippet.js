@@ -18,4 +18,5 @@
 
 import "@johnlindquist/kit"
 
+await hide()
 await keyboard.type("https://scriptkit.com")
