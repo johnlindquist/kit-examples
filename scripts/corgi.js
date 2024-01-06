@@ -22,9 +22,17 @@ let getState = async () => {
 
 // Create a Corgi Widget
 // When focused, close with `escape` or `cmd + w`
-let corgi = await widget(`<img :src="url"/>`, {
-  state: await getState(),
-})
+// Note: the `drag` class is necessary to use an html element to drag the widget
+let dragBar = `drag absolute z-10 h-4 w-full top-0 left-0`
+let corgi = await widget(
+  `
+<img :src="url"/>
+<div class="${dragBar}">
+`,
+  {
+    state: await getState(),
+  }
+)
 
 // Update State on Click
 corgi.onClick(async () => {
