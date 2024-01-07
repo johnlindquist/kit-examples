@@ -34,6 +34,10 @@ let corgi = await widget(
   }
 )
 
+corgi.onInit(() => {
+  corgi.focus()
+})
+
 // Update State on Click
 corgi.onClick(async () => {
   corgi.setState(await getState())
